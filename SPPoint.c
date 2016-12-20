@@ -12,8 +12,18 @@ typedef struct sp_point_t {
 
 
 SPPoint* spPointCreate(double* data, int dim, int index) {
+	if (data == NULL || dim < 1 || index < 0) {
+		return NULL;
+	}
 	SPPoint* p = (SPPoint*)malloc(sizeof(*p));
+	if (p == NULL) {
+		return NULL;
+	}
 	p->data = (double*)malloc(sizeof(double)*dim);
+	if (p->data == NULL) {
+		free(p);
+		return NULL;
+	}
 	p->data = data;
 	p->dim = dim;
 	p->index = index;
@@ -25,8 +35,15 @@ SPPoint* spPointCreate(double* data, int dim, int index) {
 SPPoint* spPointCopy(SPPoint* source) {
 	assert(source != NULL);
 	SPPoint* copy = (SPPoint*)malloc(sizeof(*copy));
+	if (copy == NULL) {
+		return NULL;
+	}
 	int i = 0;
 	copy->data = (double*)malloc(sizeof(double)*source->dim);
+	if (copy->data == NULL) {
+		free(copy);
+		return NULL;
+	}
 	for(i = 0; i < source->dim; ++i) {
 		copy->data[i] = source->data[i];
 	}
@@ -38,6 +55,7 @@ SPPoint* spPointCopy(SPPoint* source) {
 
 void spPointDestroy(SPPoint* point) {
 	if (point != NULL) {
+		free(point->data);
 		free(point);
 	}
 }
