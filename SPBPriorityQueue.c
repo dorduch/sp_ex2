@@ -47,14 +47,12 @@ SPBPQueue* spBPQueueCopy(SPBPQueue* source) {
 }
 
 void spBPQueueDestroy(SPBPQueue* source) {
-	int i = 0;
-	for (i = 0; i < source->size; ++i) {
-
-	}
+	free(source->queue);
+	free(source);
 }
 
 void spBPQueueClear(SPBPQueue* source) {
-	// TODO
+	source->size = 0;
 }
 
 int spBPQueueSize(SPBPQueue* source) {
@@ -66,9 +64,18 @@ int spBPQueueGetMaxSize(SPBPQueue* source) {
 }
 
 SP_BPQUEUE_MSG spBPQueueEnqueue(SPBPQueue* source, int index, double value) {
-	BPQueueElement* element = (BPQueueElement*) malloc(sizeof(BPQueueElement));
+	int i = 0;
+	if (source->size + 1 > source->maxSize) {
+		// TODO return error
+	} else {
+		for (int i = 0; i < source->size; ++i) {
+			if ()
+		}
+	}
+	BPQueueElement* element = (BPQueueElement*) malloc(sizeof(element*));
 	element->index = index;
 	element->value = value;
+
 }
 
 int main(int argc, char **argv) {
