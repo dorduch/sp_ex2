@@ -26,6 +26,10 @@ SPBPQueue* spBPQueueCreate(int maxSize) {
 		queue->size = 0;
 		queue->queue = (BPQueueElement*) malloc(
 				sizeof(BPQueueElement) * maxSize);
+		if (queue->queue == NULL) {
+			free(queue);
+			return NULL;
+		}
 		return queue;
 	} else {
 		return NULL;
@@ -35,10 +39,10 @@ SPBPQueue* spBPQueueCreate(int maxSize) {
 
 SPBPQueue* spBPQueueCopy(SPBPQueue* source) {
 	int i = 0;
-	SPBPQueue* queueCopy = (SPBPQueue*) malloc(sizeof(SPBPQueue));
+	SPBPQueue* queueCopy = (SPBPQueue*) malloc(sizeof(queueCopy));
 	queueCopy->maxSize = source->maxSize;
 	queueCopy->size = source->size;
-	queueCopy->queue = (BPQueueElement*) malloc(sizeof(source->queue));
+	queueCopy->queue = (BPQueueElement*) malloc(sizeof(BPQueueElement)*source->maxSize);
 	for (i = 0; i < source->size; ++i) {
 		queueCopy->queue[i].index = source->queue[i].index;
 		queueCopy->queue[i].value = source->queue[i].value;

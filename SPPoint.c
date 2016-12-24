@@ -88,14 +88,3 @@ double spPointL2SquaredDistance(SPPoint* p, SPPoint* q) {
 	}
 	return result;
 }
-
-int main(int argc, char **argv) {
-	double arr[] = {1,2,3,4,5};
-	int size = 5;
-	int index = 2;
-	SPPoint* p = spPointCreate(arr, size , index);
-	SPPoint* p2 = spPointCopy(p);
-	printf("%d",p->dim);
-	spPointDestroy(p);
-	printf("%d",p->dim);
-}
