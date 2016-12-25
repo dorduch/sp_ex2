@@ -212,7 +212,7 @@ int main(){
 	printarry (Queue4length);
 	printf("min is %f max is %f",spBPQueueMinValue(Queue4length),spBPQueueMaxValue(Queue4length));
 
-	printf("start is %d",Queue4length->start);
+	printf("start is %d\n",Queue4length->start);
 	printf("%d",Queue4length->size);
 		return 0;
 }
