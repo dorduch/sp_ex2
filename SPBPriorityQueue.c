@@ -213,7 +213,7 @@ int main(){
 	printf("min is %f max is %f",spBPQueueMinValue(Queue4length),spBPQueueMaxValue(Queue4length));
 
 	printf("start is %d\n",Queue4length->start);
-	printf("%d",Queue4length->size);
+	printf("%d\n",Queue4length->size);
 		return 0;
 }
 
