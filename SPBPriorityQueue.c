@@ -42,6 +42,10 @@ SPBPQueue* spBPQueueCreate(int maxSize) {
 			free(queue);
 			return NULL;
 		}
+		for (int i = 0; i < maxSize; i++) {
+			queue->queue[i].index = NULL;
+		}
+
 		return queue;
 	} else {
 		return NULL;
@@ -50,13 +54,12 @@ SPBPQueue* spBPQueueCreate(int maxSize) {
 }
 
 SPBPQueue* spBPQueueCopy(SPBPQueue* source) {
-	int i = 0;
-	SPBPQueue* queueCopy = (SPBPQueue*) malloc(sizeof(queueCopy));
+	SPBPQueue* queueCopy = (SPBPQueue*) malloc(sizeof(*queueCopy));
 	queueCopy->maxSize = source->maxSize;
 	queueCopy->size = source->size;
 	queueCopy->start = source->start;
 	queueCopy->queue = (BPQueueElement*) malloc(sizeof(BPQueueElement)*source->maxSize);
-	for (i = 0; i < source->size; ++i) {
+	for (int i = 0; i < source->size; ++i) {
 		queueCopy->queue[(queueCopy->start+i)%(queueCopy->maxSize)].index = source->queue[(queueCopy->start+i)%(queueCopy->maxSize)].index;
 		queueCopy->queue[(queueCopy->start+i)%(queueCopy->maxSize)].value = source->queue[(queueCopy->start+i)%(queueCopy->maxSize)].value;
 	}
@@ -86,9 +89,6 @@ SP_BPQUEUE_MSG spBPQueueEnqueue(SPBPQueue* source, int index, double value) {
 	//Assert source != null and maxSize is at least one
 	if ((index < 0)||(source == NULL))
 		return SP_BPQUEUE_INVALID_ARGUMENT;
-	if (source->maxSize == 0){
-		return SP_BPQUEUE_OUT_OF_MEMORY;
-	}
 
 	//Array is empty, enter first element
 	if (source->size == 0){
@@ -141,8 +141,8 @@ SP_BPQUEUE_MSG spBPQueueDequeue(SPBPQueue* source) {
 }
 
 SP_BPQUEUE_MSG spBPQueuePeek(SPBPQueue* source, BPQueueElement* res) {
-	if (source == NULL)
-			return SP_BPQUEUE_INVALID_ARGUMENT;
+	if ((source == NULL)||(res == NULL))
+		return SP_BPQUEUE_INVALID_ARGUMENT;
 	if (source->size == 0)
 		return SP_BPQUEUE_EMPTY;
 	res->index = source->queue[source->start].index;
@@ -151,13 +151,13 @@ SP_BPQUEUE_MSG spBPQueuePeek(SPBPQueue* source, BPQueueElement* res) {
 }
 
 SP_BPQUEUE_MSG spBPQueuePeekLast(SPBPQueue* source, BPQueueElement* res) {
-	if (source == NULL)
-				return SP_BPQUEUE_INVALID_ARGUMENT;
-		if (source->size == 0)
-			return SP_BPQUEUE_EMPTY;
-		res->index = source->queue[(source->start+source->size-1)%source->maxSize].index;
-		res->value = source->queue[(source->start+source->size-1)%source->maxSize].value;
-		return SP_BPQUEUE_SUCCESS;
+	if ((source == NULL)||(res == NULL))
+			return SP_BPQUEUE_INVALID_ARGUMENT;
+	if (source->size == 0)
+		return SP_BPQUEUE_EMPTY;
+	res->index = source->queue[(source->start+source->size-1)%source->maxSize].index;
+	res->value = source->queue[(source->start+source->size-1)%source->maxSize].value;
+	return SP_BPQUEUE_SUCCESS;
 }
 
 double spBPQueueMinValue(SPBPQueue* source){
@@ -173,7 +173,7 @@ double spBPQueueMaxValue(SPBPQueue* source){
 	if (source->size == 0){
 		return -1;
 	}
-	return source->queue[(source->start+source->size-1)%source->maxSize].value;
+	return source->queue[(source->start+(source->size)-1)%source->maxSize].value;
 }
 
 bool spBPQueueIsEmpty(SPBPQueue* source) {
@@ -192,12 +192,18 @@ void printarry (SPBPQueue* spbqueue) {
 		printf ("index in array: %d index of element %d value of element %f \n",i,spbqueue->queue[(i+spbqueue->start)%spbqueue->maxSize].index,spbqueue->queue[(i+spbqueue->start)%(spbqueue->maxSize)].value);
 	}
 }
+/**
 int main(){
+
+	//maxvalue after copy is problematic
+
 	SPBPQueue* Queue4length = spBPQueueCreate(4);
+
 	spBPQueueEnqueue(Queue4length,5,1);
 	spBPQueueEnqueue(Queue4length,5,2);
 	spBPQueueEnqueue(Queue4length,2,10);
 	printarry (Queue4length);
+
 	spBPQueueEnqueue(Queue4length,3,2.1);
 	printarry (Queue4length);
 	spBPQueueEnqueue(Queue4length,7,2.5);
@@ -210,11 +216,19 @@ int main(){
 	spBPQueueEnqueue(Queue4length,3,1);
 	spBPQueueEnqueue(Queue4length,3,1.4);
 	printarry (Queue4length);
+	SPBPQueue* CopyOfQueue4length = spBPQueueCopy(Queue4length);
+	spBPQueueDestroy(Queue4length);
+	printarry(CopyOfQueue4length);
+	printf("start is %d",Queue4length->start);
+	printf("min in copy is %f max is %f\n",spBPQueueMinValue(Queue4length),spBPQueueMaxValue(CopyOfQueue4length));
+	printf("size of copy %d\n",CopyOfQueue4length->size);
+	/**
 	printf("min is %f max is %f",spBPQueueMinValue(Queue4length),spBPQueueMaxValue(Queue4length));
+	/**
 
-	printf("start is %d\n",Queue4length->start);
-	printf("%d\n",Queue4length->size);
+	printf("%d",Queue4length->size);
+
 		return 0;
 }
-
+*/
 
