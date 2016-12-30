@@ -190,41 +190,4 @@ void printarry (SPBPQueue* spbqueue) {
 	}
 }
 
-int main(){
-
-	//maxvalue after copy is problematic
-
-	SPBPQueue* Queue4length = spBPQueueCreate(4);
-
-	spBPQueueEnqueue(Queue4length,5,1);
-	spBPQueueEnqueue(Queue4length,5,2);
-	spBPQueueEnqueue(Queue4length,2,10);
-	printarry (Queue4length);
-
-	spBPQueueEnqueue(Queue4length,3,2.1);
-	printarry (Queue4length);
-	spBPQueueEnqueue(Queue4length,7,2.5);
-	printarry (Queue4length);
-	spBPQueueEnqueue(Queue4length,100,20);
-	printarry (Queue4length);
-	spBPQueueDequeue(Queue4length);
-	spBPQueueDequeue(Queue4length);
-	printarry (Queue4length);
-	spBPQueueEnqueue(Queue4length,3,1);
-	spBPQueueEnqueue(Queue4length,3,1.4);
-	printarry (Queue4length);
-	SPBPQueue* CopyOfQueue4length = spBPQueueCopy(Queue4length);
-	spBPQueueDestroy(Queue4length);
-	printarry(CopyOfQueue4length);
-	printf("start is %d",Queue4length->start);
-	printf("min in copy is %f max is %f\n",spBPQueueMinValue(Queue4length),spBPQueueMaxValue(CopyOfQueue4length));
-	printf("size of copy %d\n",CopyOfQueue4length->size);
-	printf("min is %f max is %f",spBPQueueMinValue(Queue4length),spBPQueueMaxValue(Queue4length));
-
-
-	printf("%d",Queue4length->size);
-
-		return 0;
-}
-
 
