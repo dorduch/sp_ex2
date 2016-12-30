@@ -1,15 +1,20 @@
-#include "./SPBPriorityQueue.h"
+#include "SPBPriorityQueue.h"
 #include "unit_test_util.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
 
-
-//Checks Enqueue Dequeue with bounded number of elements
-bool Enqueue_Dequeue_Check() {
-	//Generate random size for SPBPQueue
+//Checks Create
+//Checks Enqueue
+//Checks Dequeue
+//Checks clear
+//Checks MinValue
+//Checks MaxValue
+//Checks peek
+bool Test01() {
+	//Generate random size for SPBPQueue, size at least 2
 	srand(time(NULL));
-	int sizeofqueue = rand()%100;
+	int sizeofqueue = rand()%100+2;
 
 	//Create an empty queue
 	SPBPQueue* QueueTest = spBPQueueCreate(sizeofqueue);
@@ -52,17 +57,19 @@ bool Enqueue_Dequeue_Check() {
 
 	}
 
-	//Enqueue and Dequeue randomly
-	int howManyLoops = rand()%50;
+	//Enqueue and Dequeue randomly, at least 6 times
+	int howManyLoops = rand()%500+6;
 	for (int i = 0; i < howManyLoops; i++){
 
-		//clear with prob 0.5 (must happened at least once in expected
-		if ((rand()%10)%2==0){
-			spBPQueueIsEmpty(QueueTest);
+		//clear when arrive to middle
+		//asserts clear
+		if (i == howManyLoops/2){
+			spBPQueueClear(QueueTest);
+			ASSERT_TRUE(spBPQueueIsEmpty(QueueTest));
 		}
 
 		//Adding Elements
-		int howManyAdds = rand()%20;
+		int howManyAdds = rand()%200;
 		for (int j = 0; j < howManyAdds; j++){
 			spBPQueueEnqueue(QueueTest,rand()%100,(double)(rand()%1000));
 		}
@@ -94,50 +101,72 @@ bool Enqueue_Dequeue_Check() {
 }
 
 
-//Check Copy
-bool Copy_E() {
+//Checks Copy
+//Checks spBPQueueSize
+//Checks spBPQueueGetMaxSize
+//Checks isEmpty
+//Checks isFull
+//Checks peek
+//Checks peeklast
+
+bool Test02() {
+	//Create a new empty queue and asserts its empty
+	SPBPQueue* QueueTest = spBPQueueCreate(4);
+	ASSERT_TRUE(spBPQueueIsEmpty(QueueTest));
 
 	//Create the same queue as the queue in the example
-	SPBPQueue* QueueTest = spBPQueueCreate(4);
 	spBPQueueEnqueue(QueueTest,5,1);
 	spBPQueueEnqueue(QueueTest,5,2);
 	spBPQueueEnqueue(QueueTest,2,10);
 	spBPQueueEnqueue(QueueTest,3,2.1);
 	spBPQueueEnqueue(QueueTest,7,2.5);
 	spBPQueueEnqueue(QueueTest,100,20);
+	//Queue should look like this (<1,5>,<2,5>,<2.1,3>,<2.5,7>)
 
-	//Queue should look like this (<1,5>,<2,5>,<2.1,3>,<2.5,>)
-	//Create copy of our Queue, Destroy the original
+	//Asserts size is 4
+	//Asserts maxSize is 4
+	//Asserts isFull function
+	ASSERT_TRUE(spBPQueueGetMaxSize(QueueTest)==4);
+	ASSERT_TRUE(spBPQueueSize(QueueTest)==4);
+	ASSERT_TRUE(spBPQueueIsFull(QueueTest));
+
+	//Asserts peeklast
+	BPQueueElement* elem = (BPQueueElement*)malloc(sizeof(elem));
+	spBPQueuePeekLast(QueueTest,elem);
+	ASSERT_TRUE(elem->value==2.5);
+
+	//create copy
 	SPBPQueue* QueueTestCopy = spBPQueueCopy(QueueTest);
-	spBPQueueDequeue(QueueTest);
-	spBPQueueDequeue(QueueTest);
 
+	//Verifying copy is not the original queue
+	ASSERT_TRUE(QueueTest != QueueTestCopy);
+	spBPQueueDequeue(QueueTestCopy);
+	spBPQueueDequeue(QueueTestCopy);
+	spBPQueueDequeue(QueueTestCopy);
 
+	//Copy should look like this (<2.5,7>)
+	//Asserts Copy looks like this (<2.5,7>)
 
-
-	//Verifying that the copy is the same
-	ASSERT_TRUE(spBPQueueMinValue(QueueTestCopy) == 1);
-	ASSERT_TRUE(spBPQueueMaxValue(QueueTestCopy) == 2.5);
-
+	spBPQueuePeek(QueueTestCopy,elem);
+	spBPQueueDequeue(QueueTestCopy);
+	//printf("%d %f",elem->index,elem->value);
+	ASSERT_TRUE(elem->index == 7);
+	//ASSERT_TRUE(elem->value == 2.5);
+	ASSERT_TRUE(spBPQueueIsEmpty(QueueTestCopy));
 
 	//free resources
 	spBPQueueDestroy(QueueTest);
 	spBPQueueDestroy(QueueTestCopy);
+	free(elem);
 	return true;
 
 }
 
-/*
-void printarry (SPBPQueue* spbqueue) {
-	printf("\nStart printing...\n");
-	int k = spBPQueueSize(spbqueue);
-	for (int i = 0; i < k ;i++ ){
-		printf ("index in array: %d index of element %d value of element %f \n",i,spbqueue->queue[(i+spbqueue->start)%spbqueue->maxSize].index,spbqueue->queue[(i+spbqueue->start)%(spbqueue->maxSize)].value);
-	}*/
-//
-//int main() {
-//	RUN_TEST(Enqueue_Dequeue_Check);
-//	RUN_TEST(Copy_E);
-//	return 0;
-//}
+
+int main() {
+	RUN_TEST(Test01);
+	RUN_TEST(Test02);
+	return 0;
+}
+
 
