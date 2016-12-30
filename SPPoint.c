@@ -4,11 +4,11 @@
 #include <stdlib.h>
 #include <math.h>
 
-typedef struct sp_point_t {
+struct sp_point_t {
 	int index;
 	int dim;
 	double* data;
-} SPPoint;
+};
 
 
 SPPoint* spPointCreate(double* data, int dim, int index) {

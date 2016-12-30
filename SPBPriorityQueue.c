@@ -4,18 +4,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-/*
-typedef struct sp_bpq_element_t {
-	int index;
-	double value;
-} BPQueueElement;
-*/
-typedef struct sp_bp_queue_t {
+#include <float.h>
+
+struct sp_bp_queue_t {
 	int maxSize;
 	int size;
 	int start;
 	BPQueueElement* queue;
-} SPBPQueue;
+};
 
 BPQueueElement* createBPQueueElement(int index,double value){
 	BPQueueElement* Element = (BPQueueElement*)malloc(sizeof(Element));
@@ -43,7 +39,8 @@ SPBPQueue* spBPQueueCreate(int maxSize) {
 			return NULL;
 		}
 		for (int i = 0; i < maxSize; i++) {
-			queue->queue[i].index = NULL;
+			queue->queue[i].index = -1;
+			queue->queue[i].value = FLT_MAX;
 		}
 
 		return queue;
@@ -192,7 +189,7 @@ void printarry (SPBPQueue* spbqueue) {
 		printf ("index in array: %d index of element %d value of element %f \n",i,spbqueue->queue[(i+spbqueue->start)%spbqueue->maxSize].index,spbqueue->queue[(i+spbqueue->start)%(spbqueue->maxSize)].value);
 	}
 }
-/**
+
 int main(){
 
 	//maxvalue after copy is problematic
@@ -222,13 +219,12 @@ int main(){
 	printf("start is %d",Queue4length->start);
 	printf("min in copy is %f max is %f\n",spBPQueueMinValue(Queue4length),spBPQueueMaxValue(CopyOfQueue4length));
 	printf("size of copy %d\n",CopyOfQueue4length->size);
-	/**
 	printf("min is %f max is %f",spBPQueueMinValue(Queue4length),spBPQueueMaxValue(Queue4length));
-	/**
+
 
 	printf("%d",Queue4length->size);
 
 		return 0;
 }
-*/
+
 

@@ -1,4 +1,4 @@
-#include "../SPBPriorityQueue.h"
+#include "./SPBPriorityQueue.h"
 #include "unit_test_util.h"
 #include <stdbool.h>
 #include <stdlib.h>
@@ -39,11 +39,11 @@ bool Enqueue_Dequeue_Check() {
 	//Each one has to have higher value than his prev
 	//Each one has to be lower than max and higher than min
 	BPQueueElement* res = (BPQueueElement*)malloc(sizeof(res));
-	SP_BPQUEUE_MSG Deq = spBPQueuePeek(QueueTest,res);
+	spBPQueuePeek(QueueTest,res);
 	int prevValue = res->value;
 	SP_BPQUEUE_MSG Deq2 = spBPQueueDequeue(QueueTest);
 	while (Deq2 == SP_BPQUEUE_SUCCESS) {
-		Deq = spBPQueuePeek(QueueTest,res);
+		spBPQueuePeek(QueueTest,res);
 		ASSERT_TRUE(res->value >= prevValue);
 		ASSERT_TRUE(res->value <= max);
 		ASSERT_TRUE(res->value >= min);
@@ -69,7 +69,6 @@ bool Enqueue_Dequeue_Check() {
 
 
 		//Delete Elements
-		int howManyRemoves = rand()%4;
 		for (int j = 0; j < howManyAdds; j++){
 			spBPQueueDequeue(QueueTest);
 		}
@@ -77,11 +76,11 @@ bool Enqueue_Dequeue_Check() {
 
 	//Check queque while not empty
 	if (!spBPQueueIsEmpty(QueueTest)){
-		SP_BPQUEUE_MSG Deq = spBPQueuePeek(QueueTest,res);
+		spBPQueuePeek(QueueTest,res);
 		int prevValue = res->value;
 		SP_BPQUEUE_MSG Deq2 = spBPQueueDequeue(QueueTest);
 		while (Deq2 == SP_BPQUEUE_SUCCESS) {
-			Deq = spBPQueuePeek(QueueTest,res);
+			spBPQueuePeek(QueueTest,res);
 			ASSERT_TRUE(res->value >= prevValue);
 			prevValue = res->value;
 			Deq2 = spBPQueueDequeue(QueueTest);
@@ -135,10 +134,10 @@ void printarry (SPBPQueue* spbqueue) {
 	for (int i = 0; i < k ;i++ ){
 		printf ("index in array: %d index of element %d value of element %f \n",i,spbqueue->queue[(i+spbqueue->start)%spbqueue->maxSize].index,spbqueue->queue[(i+spbqueue->start)%(spbqueue->maxSize)].value);
 	}*/
-
-int main() {
-	RUN_TEST(Enqueue_Dequeue_Check);
-	RUN_TEST(Copy_E);
-	return 0;
-}
+//
+//int main() {
+//	RUN_TEST(Enqueue_Dequeue_Check);
+//	RUN_TEST(Copy_E);
+//	return 0;
+//}
 
