@@ -24,7 +24,9 @@ SPPoint* spPointCreate(double* data, int dim, int index) {
 		free(p);
 		return NULL;
 	}
-	p->data = data;
+	for (int i = 0; i<dim; ++i) {
+		p->data[i] = data[i];
+	}
 	p->dim = dim;
 	p->index = index;
 
@@ -84,7 +86,7 @@ double spPointL2SquaredDistance(SPPoint* p, SPPoint* q) {
 	double result = 0;
 	int i = 0;
 	for (i = 0; i < p->dim; ++i) {
-		result+= pow((q->data[i] - p->data[i]),2);
+		result+= ((q->data[i] - p->data[i])*(q->data[i] - p->data[i]));
 	}
 	return result;
 }
