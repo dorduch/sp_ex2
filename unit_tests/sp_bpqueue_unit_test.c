@@ -1,9 +1,8 @@
-#include "../SPBPriorityQueue.h"
+#include "SPBPriorityQueue.h"
 #include "unit_test_util.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
-
 
 //Checks Create
 //Checks Enqueue
@@ -169,6 +168,5 @@ int main() {
 	RUN_TEST(Test02);
 	return 0;
 }
-
 
 
