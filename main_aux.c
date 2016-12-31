@@ -30,7 +30,7 @@ void printQueue(SPBPQueue* queue) {
 	int queueSize = spBPQueueSize(queue);
 	for (i = 0; i < queueSize; ++i) {
 		BPQueueElement* queueHead = (BPQueueElement*) malloc(
-				sizeof(BPQueueElement*));
+				sizeof(BPQueueElement));
 		spBPQueuePeek(queue, queueHead);
 		spBPQueueDequeue(queue);
 		if (i + 1 == queueSize) {
