@@ -44,7 +44,7 @@ bool Test01() {
 	//Dequeue all elements
 	//Each one has to have higher value than his prev
 	//Each one has to be lower than max and higher than min
-	BPQueueElement* res = (BPQueueElement*)malloc(sizeof(res));
+	BPQueueElement* res = (BPQueueElement*)malloc(sizeof(BPQueueElement));
 	spBPQueuePeek(QueueTest,res);
 	int prevValue = res->value;
 	SP_BPQUEUE_MSG Deq2 = spBPQueueDequeue(QueueTest);
@@ -132,7 +132,7 @@ bool Test02() {
 	ASSERT_TRUE(spBPQueueIsFull(QueueTest));
 
 	//Asserts peeklast
-	BPQueueElement* elem = (BPQueueElement*)malloc(sizeof(elem));
+	BPQueueElement* elem = (BPQueueElement*)malloc(sizeof(BPQueueElement));
 	spBPQueuePeekLast(QueueTest,elem);
 	ASSERT_TRUE(elem->value==2.5);
 
